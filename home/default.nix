@@ -3,6 +3,9 @@
   imports = [
     ./ghostty.nix
     ./zsh.nix
+    ./starship.nix
+    ./nvim.nix
+    ./scripts.nix
   ];
 
   home.username = user;

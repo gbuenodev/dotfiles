@@ -2,7 +2,6 @@
 {
   imports = [
     ../../modules/darwin/homebrew.nix
-    ../../modules/darwin/update.nix
     ../../modules/darwin/hotkeys.nix
   ];
 

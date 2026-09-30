@@ -1,0 +1,27 @@
+# Interactive shell settings.
+# Sourced at the end of ~/.zshrc, which home-manager generates. By then the
+# plugins, completions (compinit) and Starship are already loaded.
+
+# History
+HISTSIZE=50000
+SAVEHIST=50000
+setopt extended_history share_history hist_ignore_dups hist_ignore_space
+
+# Options
+setopt interactive_comments auto_menu complete_in_word always_to_end
+
+# Completion: case-insensitive, menu navigable with arrows
+zstyle ':completion:*' matcher-list 'm:{[:lower:][:upper:]}={[:upper:][:lower:]}' 'r:|=*' 'l:|=* r:|=*'
+zstyle ':completion:*' menu select
+zstyle ':completion:*' list-colors ''
+zstyle ':completion:*' special-dirs true
+
+# Home, End and Delete keys
+bindkey '^[[H' beginning-of-line
+bindkey '^[[F' end-of-line
+bindkey '^[[3~' delete-char
+
+# Aliases
+alias grep='grep --color=auto'
+alias vi=nvim
+alias vim=nvim

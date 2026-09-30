@@ -1,0 +1,17 @@
+# Environment for every zsh (login or not, interactive or not).
+# Sourced at the end of ~/.zshenv, which home-manager generates.
+
+typeset -U path fpath
+
+path=(
+	"$HOME/.local/bin"
+	"$HOME/go/bin"
+	$path
+	"/Applications/Visual Studio Code.app/Contents/Resources/app/bin"
+)
+
+# Completions directory must be in fpath before compinit runs in ~/.zshrc
+fpath=("$HOME/.docker/completions" $fpath)
+
+export AWS_PROFILE=nomaru-admin
+export CLICOLOR=1

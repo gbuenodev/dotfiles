@@ -1,0 +1,34 @@
+# Two-line prompt inspired by the oh-my-zsh "gnzh" theme
+add_newline = false
+format = """
+╭─$username$hostname $directory$git_branch$git_status
+╰─$character"""
+right_format = "$cmd_duration$status"
+
+[username]
+show_always = true
+format = "[$user]($style)"
+style_user = "bold green"
+
+[hostname]
+ssh_only = false
+format = "@[$hostname]($style)"
+style = "bold green"
+
+[directory]
+style = "bold blue"
+truncate_to_repo = false
+truncation_length = 100
+
+[git_branch]
+format = "[‹$branch›]($style)"
+style = "bold yellow"
+
+[character]
+success_symbol = "[➤](bold green)"
+error_symbol = "[➤](bold red)"
+
+# Exit code of the last command, on the right (disabled by default)
+[status]
+disabled = false
+format = "[$status ↵]($style)"
