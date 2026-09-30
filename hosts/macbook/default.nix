@@ -3,6 +3,7 @@
   imports = [
     ../../modules/darwin/homebrew.nix
     ../../modules/darwin/update.nix
+    ../../modules/darwin/hotkeys.nix
   ];
 
   nixpkgs.hostPlatform = "aarch64-darwin";
@@ -33,6 +34,7 @@
   users.users.${user}.home = "/Users/${user}";
 
   programs.zsh.enable = true;
+  programs.zsh.enableGlobalCompInit = false;
 
   system.stateVersion = 6;
 }

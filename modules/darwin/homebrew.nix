@@ -10,6 +10,7 @@
     };
 
     casks = [
+      "cmux"
       "ghostty"
       "raycast"
     ];
