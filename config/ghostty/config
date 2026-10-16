@@ -7,21 +7,27 @@ macos-option-as-alt = true
 window-save-state = always
 confirm-close-surface = false
 
-# Splits
-keybind = super+d=new_split:right
-keybind = super+shift+d=new_split:down
-keybind = super+ctrl+h=goto_split:left
-keybind = super+ctrl+j=goto_split:bottom
-keybind = super+ctrl+k=goto_split:top
-keybind = super+ctrl+l=goto_split:right
-keybind = super+shift+enter=toggle_split_zoom
-
-# Tabs
-keybind = super+shift+h=previous_tab
-keybind = super+shift+l=next_tab
-
 # Hyper key (Caps Lock via Raycast = ctrl+alt+shift+super)
-keybind = ctrl+alt+shift+super+j=scroll_page_lines:-3
-keybind = ctrl+alt+shift+super+k=scroll_page_lines:3
-keybind = ctrl+alt+shift+super+i=increase_font_size:1
-keybind = ctrl+alt+shift+super+o=decrease_font_size:1
+# Tabs
+keybind = ctrl+alt+shift+super+t=new_tab
+keybind = ctrl+alt+shift+super+bracket_left=previous_tab
+keybind = ctrl+alt+shift+super+bracket_right=next_tab
+keybind = ctrl+alt+shift+super+digit_1=goto_tab:1
+keybind = ctrl+alt+shift+super+digit_2=goto_tab:2
+keybind = ctrl+alt+shift+super+digit_3=goto_tab:3
+keybind = ctrl+alt+shift+super+digit_4=goto_tab:4
+keybind = ctrl+alt+shift+super+digit_5=goto_tab:5
+keybind = ctrl+alt+shift+super+digit_6=goto_tab:6
+keybind = ctrl+alt+shift+super+digit_7=goto_tab:7
+keybind = ctrl+alt+shift+super+digit_8=goto_tab:8
+keybind = ctrl+alt+shift+super+digit_9=last_tab
+
+# Font size
+keybind = ctrl+alt+shift+super+equal=increase_font_size:1
+keybind = ctrl+alt+shift+super+minus=decrease_font_size:1
+
+# Splits
+keybind = ctrl+alt+shift+super+h=goto_split:left
+keybind = ctrl+alt+shift+super+j=goto_split:down
+keybind = ctrl+alt+shift+super+k=goto_split:up
+keybind = ctrl+alt+shift+super+l=goto_split:right

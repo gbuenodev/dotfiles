@@ -2,6 +2,7 @@
 {
   imports = [
     ./ghostty.nix
+    ./cmux.nix
     ./zsh.nix
     ./starship.nix
     ./nvim.nix
