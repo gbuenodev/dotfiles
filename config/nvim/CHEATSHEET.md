@@ -70,19 +70,109 @@ Operators combine with motions: `d3j`, `y}`, `c$`, `gcip`.
 | `Space f h`   | Help pages                              |
 | `Space f k`   | All keymaps                             |
 | `Space /`     | Fuzzy search in current file            |
+| `Space f .`   | Resume last search (same text and spot) |
+| `Space g s`   | Git changed files, with diff preview    |
+| `Space g c`   | Git commits                             |
 
-Inside Telescope: `Ctrl-j` / `Ctrl-k` move, `Enter` open,
-`Ctrl-v` / `Ctrl-x` open in vertical / horizontal split, `Esc` close.
+Matching is fuzzy: `zshnix` finds `home/zsh.nix`; spaces split terms
+(`home zsh`).
 
-## Windows and buffers
+Inside Telescope:
 
-| Key             | Action                                |
-|-----------------|---------------------------------------|
-| `Space s v` / `Space s h` | Split vertical / horizontal (explorer) |
-| `:vs file` / `:sp file` | Split and open file             |
-| `Ctrl-w h/j/k/l`| Move between splits                   |
-| `Ctrl-w q`      | Close split                           |
-| `:bn` / `:bp`   | Next / previous buffer                |
+| Key                 | Action                                  |
+|---------------------|-----------------------------------------|
+| `Ctrl-j` / `Ctrl-k` | Move down / up                          |
+| `Ctrl-f` / `Ctrl-b` | Scroll the preview down / up            |
+| `Enter`             | Open (grep results open at the line)    |
+| `Ctrl-d`            | Open beside (like Cmd-D in the terminal)|
+| `Ctrl-Shift-D`      | Open below (like Cmd-Shift-D)           |
+| `Ctrl-v` / `Ctrl-x` | Same, Telescope defaults                |
+| `Ctrl-t`            | Open in a new tab                       |
+| `Tab`               | Mark item (multi-select)                |
+| `Ctrl-q`            | Marked items to quickfix (all if none)  |
+| `Esc`               | Close                                   |
+
+## Quickfix list
+
+A list of file:line positions to walk through one by one, usually filled
+from Telescope with `Ctrl-q` (for example, after `Space f g`).
+
+| Command                        | Action                              |
+|--------------------------------|-------------------------------------|
+| `:copen` / `:cclose`           | Open / close the list               |
+| `:cnext` / `:cprev`            | Next / previous position            |
+| `Enter` on a line              | Jump to that position               |
+| `:cdo s/old/new/g \| update`   | Replace in every position and save  |
+
+## Windows (splits)
+
+All window commands start with `Ctrl-w`: press it, release, then the key.
+
+| Key                 | Action                                  |
+|---------------------|-----------------------------------------|
+| `Ctrl-w h/j/k/l`    | Go to window left / below / above / right |
+| `Ctrl-w w`          | Next window (cycle)                     |
+| `Ctrl-w p`          | Back to the previous window             |
+| `Ctrl-w v` / `Ctrl-w s` | Split current window beside / below |
+| `Ctrl-w q`          | Close window                            |
+| `Ctrl-w o`          | Close all other windows                 |
+| `Ctrl-w =`          | Make all windows the same size          |
+| `Ctrl-w T`          | Move window to a new tab                |
+| `:vs file` / `:sp file` | Open file beside / below            |
+
+## Buffers (open files)
+
+Closing a window or tab keeps its file open as a buffer.
+
+| Key / command          | Action                                |
+|------------------------|---------------------------------------|
+| `Ctrl-^`               | Toggle with the previous file         |
+| `[b` / `]b`            | Previous / next buffer                |
+| `Space f b`            | Pick a buffer (Telescope)             |
+| `:ls`                  | List buffers                          |
+| `:vert sb name`        | Open buffer beside (`Tab` completes)  |
+| `:sb name`             | Open buffer below                     |
+| `:vert sb #`           | Open the previous buffer beside       |
+| `:bd`                  | Close (delete) the current buffer     |
+
+## Tabs (tab pages)
+
+Tabs hold window layouts. `Ctrl-t` in Telescope opens a file in a new tab.
+
+| Key / command     | Action                                     |
+|-------------------|--------------------------------------------|
+| `gt` / `gT`       | Next / previous tab                        |
+| `2gt`             | Go to tab 2                                |
+| `g<Tab>`          | Back to the last tab                       |
+| `:tabs`           | List tabs                                  |
+| `:tabnew .`       | New tab with the project explorer          |
+| `:tab sb name`    | Open buffer in a new tab                   |
+| `:tabclose`       | Close tab (its files stay open as buffers) |
+| `:tabonly`        | Close all other tabs                       |
+
+Move a tab into a split: `:tabclose`, then `Space f b`, pick the file and
+`Ctrl-d` (beside) or `Ctrl-Shift-D` (below).
+
+## File explorer (netrw)
+
+| Command            | Opens the explorer                         |
+|--------------------|--------------------------------------------|
+| `:e .`             | Project folder, in the current window      |
+| `:Explore`         | Folder of the current file                 |
+| `:Texplore`        | In a new tab                               |
+| `:Lexplore`        | As a left sidebar (run again to close)     |
+| `Space s v` / `Space s h` | In a split beside / below          |
+
+Inside the explorer:
+
+| Key       | Action                                   |
+|-----------|------------------------------------------|
+| `Enter`   | Open file or folder                      |
+| `-`       | Up one folder                            |
+| `v` / `o` | Open file beside / below                 |
+| `t`       | Open file in a new tab                   |
+| `%` / `d` | New file / new folder                    |
+| `R` / `D` | Rename / delete                          |
 
 ## Files
 
