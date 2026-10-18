@@ -1,6 +1,9 @@
 { pkgs, user, ... }:
 {
-  imports = [ ./hardware-configuration.nix ];
+  imports = [
+    ./hardware-configuration.nix
+    ./jellyfin.nix
+  ];
 
   # Boot
   boot.loader.systemd-boot.enable = true;
@@ -76,6 +79,7 @@
     pkgs.git
     pkgs.neovim
     pkgs.ghostty.terminfo
+    pkgs.rsync # receiving end of mediasync
   ];
 
   # Server: never suspend, even with the lid closed

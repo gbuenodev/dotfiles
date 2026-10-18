@@ -13,6 +13,7 @@
       "cmux"
       "dbeaver-community"
       "ghostty"
+      "qbittorrent"
       "raycast"
     ];
   };
