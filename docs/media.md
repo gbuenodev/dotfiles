@@ -29,6 +29,8 @@ Instalado pelo nixpkgs (`home/qbittorrent.nix`). As preferências ficam no próp
   - **`--remove-source-files`:** apaga do Mac só o que foi enviado. Depois, o script remove as pastas que ficaram vazias.
   - **`--chmod`:** os arquivos chegam com permissão de leitura para o Jellyfin.
 - Se não houver nada a enviar, sai sem usar a rede.
+- Antes de enviar, espera até os arquivos pararem de chegar (nenhum movido nos últimos 20 s, por até 5 min), para não mandar um vídeo antes das legendas.
+- Organiza as legendas das pastas com **um único vídeo**: move os `.srt`, `.ass`, `.ssa`, `.vtt` e `.sub`, inclusive os de subpastas como `Subs/`, para o lado do vídeo, com o nome `<vídeo>.<idioma>[.forced|.sdh].<ext>`, que o Jellyfin reconhece. O idioma vem do nome do arquivo (`English`/`eng` → `en`, `Brazilian`/`pt-BR`/`pob` → `pt-BR`, `Portuguese`/`por` → `pt`, `Spanish`/`spa` → `es`; os outros mantêm o nome original), e as cópias idênticas são apagadas. Pastas com vários vídeos, como temporadas inteiras, ficam como estão.
 - Um agente do launchd (`org.nix-community.home.mediasync`) roda o script quando algo muda em `movies/` ou `shows/`, a cada 10 minutos (para tentar de novo se o hyrule estiver desligado) e no login.
 - Log: `~/Library/Logs/mediasync.log`. Para rodar à mão: `mediasync`.
 
