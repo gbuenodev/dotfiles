@@ -13,5 +13,7 @@ path=(
 # Completions directory must be in fpath before compinit runs in ~/.zshrc
 fpath=("$HOME/.docker/completions" $fpath)
 
-export AWS_PROFILE=nomaru-admin
 export CLICOLOR=1
+
+# Machine-specific environment, kept out of the repo
+[[ -r ~/.zshenv.local ]] && source ~/.zshenv.local
