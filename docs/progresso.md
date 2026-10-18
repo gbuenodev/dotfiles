@@ -21,7 +21,7 @@ Completo; aplica sem erros com `nxr`.
 
 ### hyrule (homelab, NixOS)
 
-**Passos A e B concluídos.** NixOS instalado à mão pelo ISO minimal (26.05) e depois trazido para o flake: `nixosConfigurations.hyrule` em `hosts/hyrule/`, no mesmo `nixpkgs-unstable` do Mac (26.11), com o mesmo `home/`. O repo está clonado em `~/dotfiles` no hyrule (HTTPS, só leitura). Acesso: `ssh hyrule` (Avahi publica `hyrule.local`; IP atual `192.168.0.14`).
+**Passos A e B concluídos.** NixOS instalado à mão pelo ISO minimal (26.05) e depois trazido para o flake: `nixosConfigurations.hyrule` em `hosts/hyrule/`, no mesmo `nixpkgs-unstable` do Mac (26.11), com o mesmo `home/`. O repo está clonado em `~/dotfiles` no hyrule (HTTPS, só leitura). Acesso: `ssh hyrule` (Avahi publica `hyrule.local`). **IP fixo `192.168.0.14`**, definido na conexão `G2` com `nmcli` (manual, gateway e DNS `192.168.0.1`); fica no `.nmconnection`, fora do repo, junto com a senha da Wi-Fi.
 
 **Fluxo de mudança:** editar no kokiri, commitar e dar push; no hyrule, `git -C ~/dotfiles pull` e `nxr`. Para testar sem ativar: `nixos-rebuild build --flake ~/dotfiles#hyrule` (não precisa de sudo).
 
@@ -32,7 +32,12 @@ Completo; aplica sem erros com `nxr`.
 - **Ghostty via SSH:** sem a terminfo, programas com pager falham com `'xterm-ghostty': unknown terminal type` (contorno: `--no-pager` ou `TERM=xterm-256color`). Resolvido com `pkgs.ghostty.terminfo` nos pacotes.
 - **Senhas fora do Nix:** a senha do `gbueno` foi definida com `nixos-enter` + `passwd` (só no `/etc/shadow`); o root está bloqueado (`--no-root-passwd`). A Wi-Fi é o `.nmconnection` copiado do live para `/etc/NetworkManager/system-connections/` (root, 600).
 
-**Próximo:** definir o primeiro uso (passo C em diante, um serviço por vez).
+**Primeiro uso: Jellyfin** (passo C), para assistir na TV Samsung (Tizen) os arquivos baixados por torrent no Mac.
+
+- **C.1:** `hosts/hyrule/jellyfin.nix`: `services.jellyfin` com `openFirewall` (TCP 8096/8920, UDP 1900/7359) e `/srv/media/{movies,shows}` (dono `gbueno`, 0755) via `systemd.tmpfiles`. Usuários e bibliotecas do Jellyfin ficam em `/var/lib/jellyfin`, configurados pela interface web (`http://hyrule.local:8096`), fora do Nix.
+- **C.2:** qBittorrent (cask) baixa no Mac; o comando `mediasync` (`scripts/mediasync.sh` + `home/mediasync.nix`, só no kokiri) move `~/Hyrule/Jellyfin/media/{movies,shows}` para `hyrule:/srv/media` com `rsync --remove-source-files`. Um agente do launchd roda ao mudar as pastas e a cada 10 minutos. Log: `~/Library/Logs/mediasync.log`. O qBittorrent precisa de pasta de incompletos separada e de parar/remover o torrent ao concluir (senão o seeding quebra quando o arquivo sai do Mac).
+- **C.3:** app do Jellyfin na TV, apontando para `http://192.168.0.14:8096`.
+- **C.4 (se precisar):** transcodificação por hardware (Intel QSV/VAAPI). As Samsung não tocam DTS e costumam converter legendas ASS/PGS.
 
 ## Histórico
 
@@ -67,7 +72,9 @@ Completo; aplica sem erros com `nxr`.
 - [ ] `nxu` no hyrule: o `scripts/nixupdate.sh` roda `brew` sem conferir se existe; pôr um `if` para só rodar no Mac.
 - [ ] Apagar o `/etc/nixos/` antigo do hyrule (já não é usado; o sistema vem do flake).
 - [ ] `home/ghostty.nix` ainda tem o ramo Linux que instala o `pkgs.ghostty`; simplificar agora que ele é só do Mac.
-- [ ] IP fixo (reserva no DHCP do roteador ou no NetworkManager), para o `192.168.0.14` não mudar.
+- [ ] Reservar o `192.168.0.14` no DHCP do roteador (MAC `5c:cd:5b:fe:7c:bb`), para nenhum outro aparelho receber esse IP.
+- [ ] Jellyfin: assistente inicial, bibliotecas, app na TV (C.3) e, se necessário, transcodificação por hardware (C.4).
+- [ ] Confirmar se o agente `mediasync` precisa da permissão de Rede Local do macOS.
 - [ ] Mais tarde: controlar a rede Wi-Fi de casa pelo homelab (ainda não; esperar o usuário trazer).
 
 ### Mac
