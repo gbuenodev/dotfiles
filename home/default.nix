@@ -1,11 +1,10 @@
 { pkgs, user, ... }:
 {
   imports = [
-    ./ghostty.nix
-    ./cmux.nix
     ./zsh.nix
     ./starship.nix
     ./nvim.nix
+    ./ssh.nix
     ./scripts.nix
   ];
 

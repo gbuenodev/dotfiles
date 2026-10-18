@@ -1,0 +1,7 @@
+# home-manager modules only for this Mac
+{
+  imports = [
+    ../../home/ghostty.nix
+    ../../home/cmux.nix
+  ];
+}
