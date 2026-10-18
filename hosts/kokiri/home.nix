@@ -4,5 +4,6 @@
     ../../home/ghostty.nix
     ../../home/cmux.nix
     ../../home/mediasync.nix
+    ../../home/qbittorrent.nix
   ];
 }

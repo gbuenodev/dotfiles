@@ -35,7 +35,7 @@ Completo; aplica sem erros com `nxr`.
 **Primeiro uso: Jellyfin** (passo C), para assistir na TV Samsung (Tizen) os arquivos baixados por torrent no Mac.
 
 - **C.1:** `hosts/hyrule/jellyfin.nix`: `services.jellyfin` com `openFirewall` (TCP 8096/8920, UDP 1900/7359) e `/srv/media/{movies,shows}` (dono `gbueno`, 0755) via `systemd.tmpfiles`. Usuários e bibliotecas do Jellyfin ficam em `/var/lib/jellyfin`, configurados pela interface web (`http://hyrule.local:8096`), fora do Nix.
-- **C.2:** qBittorrent (cask) baixa no Mac; o comando `mediasync` (`scripts/mediasync.sh` + `home/mediasync.nix`, só no kokiri) move `~/Hyrule/Jellyfin/media/{movies,shows}` para `hyrule:/srv/media` com `rsync --remove-source-files`. Um agente do launchd roda ao mudar as pastas e a cada 10 minutos. Log: `~/Library/Logs/mediasync.log`. O qBittorrent precisa de pasta de incompletos separada e de parar/remover o torrent ao concluir (senão o seeding quebra quando o arquivo sai do Mac).
+- **C.2:** qBittorrent (do nixpkgs, ver Decisões) baixa no Mac; o comando `mediasync` (`scripts/mediasync.sh` + `home/mediasync.nix`, só no kokiri) move `~/Hyrule/Jellyfin/media/{movies,shows}` para `hyrule:/srv/media` com `rsync --remove-source-files`. Um agente do launchd roda ao mudar as pastas e a cada 10 minutos. Log: `~/Library/Logs/mediasync.log`. O qBittorrent precisa de pasta de incompletos separada e de parar/remover o torrent ao concluir (senão o seeding quebra quando o arquivo sai do Mac).
 - **C.3:** app do Jellyfin na TV, apontando para `http://192.168.0.14:8096`.
 - **C.4 (se precisar):** transcodificação por hardware (Intel QSV/VAAPI). As Samsung não tocam DTS e costumam converter legendas ASS/PGS.
 
@@ -49,7 +49,7 @@ Completo; aplica sem erros com `nxr`.
 ## Decisões tomadas
 
 - **Nix gerencia pacotes e sistema; as configs das ferramentas são do usuário.** Ficam como arquivos nativos em `config/<app>/`, ligados com `mkOutOfStoreSymlink`, sem `settings` no Nix. O histórico delas é o git, não o rollback do Nix.
-- **Apps gráficos via cask.** No Mac, `package = null` nos módulos do home-manager quando o app vem do cask.
+- **Apps gráficos via cask.** Exceção: o qBittorrent vem do nixpkgs (`home/qbittorrent.nix`), porque o Homebrew desativou o cask em 2026-09-01 (falha no Gatekeeper). Custa ~450 MB de dependências (Qt) no store. No Mac, `package = null` nos módulos do home-manager quando o app vem do cask.
 - **Ferramentas de terminal via Nix**, iguais no Mac e no homelab.
 - **Ghostty fica no cask**, não no Nix. No homelab, instalar só `pkgs.ghostty.terminfo`.
 - **O rebuild não atualiza o Homebrew** (`autoUpdate` e `upgrade` desligados). Aplicar: `nxr`. Atualizar tudo (flake inputs + Homebrew) e aplicar: `nxu`.
