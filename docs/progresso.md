@@ -1,0 +1,64 @@
+# Progresso
+
+Diário de bordo da configuração. Atualizar ao fim de cada sessão de trabalho.
+
+## Estado atual (2026-10-17)
+
+O Mac (`hyrule`, `darwinConfigurations.macbook`) está completo e aplica sem erros com `nxr`. Tudo está commitado.
+
+- **Sistema (nix-darwin):** Touch ID no `sudo`, `nix-gc` semanal e `nix-optimise`, hostname `hyrule`, ⌘Espaço liberado do Spotlight para o Raycast (`modules/darwin/hotkeys.nix`).
+- **Homebrew:** casks `cmux`, `dbeaver-community`, `ghostty` e `raycast`. O problema da adoção do `Raycast.app` foi resolvido; hoje o app é do `gbueno`.
+- **home-manager:** zsh (`programs.zsh` com autosuggestion, syntax highlighting e history substring search), Starship, Ghostty, cmux, neovim (com ripgrep e fd) e os comandos `nxr`/`nxu`.
+- **Configs nativas em `config/`** (ghostty, starship, zsh, nvim, cmux), ligadas com `mkOutOfStoreSymlink`. O `~/.zshrc` passou a ser gerado pelo home-manager e carrega o `config/zsh/zshrc`.
+- **nvim:** lazy.nvim com kanagawa, telescope e which-key, além do `CHEATSHEET.md` aberto com `Space ?`.
+
+**Agora:** começar o homelab. Antes de projetar, ouvir os objetivos (hardware, primeiro uso, evolução, acesso de fora, experiência com a instalação do NixOS).
+
+## Histórico
+
+- **2026-09-27:** casks do Homebrew, Touch ID, gc/optimise. O rebuild parou no cask do Raycast (proteção App Management do macOS).
+- **2026-09-30:** zsh no home-manager, configs movidas para `config/`, neovim, `nxr`/`nxu` no lugar de `dotfiles-update`.
+- **2026-10-16:** plugins do nvim, config do cmux, atalhos do Ghostty com a Hyper Key (Caps Lock).
+- **2026-10-17:** mais atalhos do Telescope, cheatsheet ampliado, coassinaturas do Claude removidas do histórico, variáveis específicas da máquina movidas para o `~/.zshenv.local` (fora do repo), início do homelab.
+
+## Decisões tomadas
+
+- **Nix gerencia pacotes e sistema; as configs das ferramentas são do usuário.** Ficam como arquivos nativos em `config/<app>/`, ligados com `mkOutOfStoreSymlink`, sem `settings` no Nix. O histórico delas é o git, não o rollback do Nix.
+- **Apps gráficos via cask.** No Mac, `package = null` nos módulos do home-manager quando o app vem do cask.
+- **Ferramentas de terminal via Nix**, iguais no Mac e no homelab.
+- **Ghostty fica no cask**, não no Nix. No homelab, instalar só `pkgs.ghostty.terminfo`.
+- **O rebuild não atualiza o Homebrew** (`autoUpdate` e `upgrade` desligados). Aplicar: `nxr`. Atualizar tudo (flake inputs + Homebrew) e aplicar: `nxu`.
+- **`nxr` já prevê Linux:** usa `nixos-rebuild` e o `hostname` como host padrão fora do macOS.
+- **`cleanup = "none"`** até terminar o inventário dos pacotes do Homebrew.
+- **Formatação:** `nix fmt` (nixfmt-tree).
+- **nvim:** lazy.nvim (não a distribuição LazyVim). Servidores LSP pelo Nix, sem Mason. Navegação de janelas no `Ctrl-w` padrão, sem remapear. Evitar atalhos com Alt (o teclado AULA 65 não tem).
+- **Commits sem coassinatura do Claude.**
+- **`/opt/homebrew`** era do `suaquadra` (uid 501); passou para o `gbueno` com `chown`.
+
+## Pendências
+
+### Homelab
+
+- [ ] Definir objetivos e hardware.
+- [ ] Para quando o host NixOS entrar no flake: `formatter` também para Linux e canal nixpkgs estável para o servidor (a decidir).
+
+### Mac
+
+- [ ] Adicionar `result` ao `.gitignore` (é o link deixado por `nix build`/`darwin-rebuild build`).
+- [ ] Inventário do Homebrew. Ainda não declarado: o cask `session-manager-plugin`. Taps sem confiança: `hashicorp/tap`, `mongodb/brew`, `supabase/tap` (decidir `brew trust` ou `untap`). Apps instalados à mão em `/Applications` a virar casks: ChatGPT, Granola, Zed, Docker, Insomnia, balenaEtcher, Unity Hub, Spotify. Depois, `cleanup = "uninstall"`.
+- [ ] Adotar o `nix-homebrew` com `autoMigrate = true` (passo separado).
+- [ ] `direnv` e `nix-direnv`; substituir o gvm e o nvm por flakes por projeto.
+- [ ] `system.defaults` (Dock, Finder, teclado).
+- [ ] `programs.git`, `programs.ssh`, `fzf`, `zoxide` etc. no home-manager.
+
+### nvim
+
+- [ ] Confirmar se o `Ctrl-d` no Telescope funciona (foi relatado que "não funcionou"; talvez faltasse reiniciar o nvim).
+- [ ] Próximos plugins: gitsigns + diffview, depois treesitter, LSP, conform e oil.nvim.
+
+### Contas do Mac
+
+- [ ] O `suaquadra` ainda está no grupo `admin`: `sudo dseditgroup -o edit -d suaquadra -t user admin`.
+- [ ] Resíduos de contas apagadas no grupo `admin` (`teste` e o UUID órfão `316B8DCC-E5E3-4201-9AB5-EEC03E1B388C`), `/Users/Deleted Users/teste` e `/Library/Caches/Desktop Pictures`.
+- [ ] Gerenciar o `suaquadra` pelo home-manager (exige config por usuário em vez do `user` único). As coisas de trabalho (taps, `session-manager-plugin`) vão para esse perfil.
+
