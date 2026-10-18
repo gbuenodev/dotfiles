@@ -37,6 +37,6 @@ format = "[$status ↵]($style)"
 
 # Hyrule Field
 [palettes.hyrule_field]
-person = "#e6c35c" # gold: the Triforce
-path = "#7fb35a"   # grass green: the open field
-branch = "#87b6d9" # sky blue: the sky over the field
+person = "#7aa2f7" # royal blue: the Hylian crest
+path = "#89ddff"   # light sky blue: the sky over the field
+branch = "#a5b4fc" # periwinkle: the Master Sword's hilt
