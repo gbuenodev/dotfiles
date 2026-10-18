@@ -1,102 +1,42 @@
-# Starship "tokyo-night" preset (starship preset tokyo-night)
-"$schema" = 'https://starship.rs/config-schema.json'
-
+# Two-line prompt inspired by the oh-my-zsh "gnzh" theme.
+# Same layout on every host (kokiri.toml, hyrule.toml); only the palette at the end differs.
+add_newline = false
 format = """
-[░▒▓](#a3aed2)\
-$os\
-[](bg:#769ff0 fg:#a3aed2)\
-$directory\
-[](fg:#769ff0 bg:#394260)\
-$git_branch\
-$git_status\
-[](fg:#394260 bg:#212736)\
-$nodejs\
-$bun\
-$rust\
-$golang\
-$php\
-[](fg:#212736 bg:#1d2230)\
-$time\
-[ ](fg:#1d2230)\
-\n$character"""
+╭─$username$hostname $directory$git_branch$git_status
+╰─$character"""
+right_format = "$cmd_duration$status"
+palette = "hyrule_field"
+
+[username]
+show_always = true
+format = "[$user]($style)"
+style_user = "bold person"
+
+[hostname]
+ssh_only = false
+format = "@[$hostname]($style)"
+style = "bold person"
 
 [directory]
-style = "fg:#e3e5e5 bg:#769ff0"
-format = "[ $path ]($style)"
-truncation_length = 3
-truncation_symbol = "…/"
-
-[directory.substitutions]
-"Documents" = "󰈙 "
-"Downloads" = " "
-"Music" = " "
-"Pictures" = " "
+style = "bold path"
+truncate_to_repo = false
+truncation_length = 100
 
 [git_branch]
-symbol = ""
-style = "bg:#394260"
-format = '[[ $symbol $branch ](fg:#769ff0 bg:#394260)]($style)'
+format = "[‹$branch›]($style)"
+style = "bold branch"
 
-[git_status]
-style = "bg:#394260"
-format = '[[($all_status$ahead_behind )](fg:#769ff0 bg:#394260)]($style)'
+[character]
+success_symbol = "[➤](bold person)"
+error_symbol = "[➤](bold red)"
 
-[nodejs]
-symbol = ""
-style = "bg:#212736"
-format = '[[ $symbol ($version) ](fg:#769ff0 bg:#212736)]($style)'
-
-[bun]
-symbol = ""
-style = "bg:#212736"
-format = '[[ $symbol ($version) ](fg:#769ff0 bg:#212736)]($style)'
-
-[rust]
-symbol = ""
-style = "bg:#212736"
-format = '[[ $symbol ($version) ](fg:#769ff0 bg:#212736)]($style)'
-
-[golang]
-symbol = ""
-style = "bg:#212736"
-format = '[[ $symbol ($version) ](fg:#769ff0 bg:#212736)]($style)'
-
-[php]
-symbol = ""
-style = "bg:#212736"
-format = '[[ $symbol ($version) ](fg:#769ff0 bg:#212736)]($style)'
-
-[time]
+# Exit code of the last command, on the right (disabled by default)
+[status]
 disabled = false
-time_format = "%R" # Hour:Minute Format
-style = "bg:#1d2230"
-format = '[[  $time ](fg:#a0a9cb bg:#1d2230)]($style)'
+format = "[$status ↵]($style)"
 
-[os]
-style = "bg:#a3aed2 fg:#090c0c"
-format = "[ $symbol ]($style)"
-disabled = false
-
-[os.symbols]
-Windows = "󰍲"
-Ubuntu = "󰕈"
-SUSE = ""
-Raspbian = "󰐿"
-Mint = "󰣭"
-Macos = "󰀵"
-Manjaro = ""
-Linux = "󰌽"
-Gentoo = "󰣨"
-Fedora = "󰣛"
-Alpine = ""
-Amazon = ""
-Android = ""
-AOSC = ""
-Arch = "󰣇"
-Artix = "󰣇"
-EndeavourOS = ""
-CentOS = ""
-Debian = "󰣚"
-Redhat = "󱄛"
-RedHatEnterprise = "󱄛"
-Pop = ""
+# Hyrule Field
+[palettes.hyrule_field]
+person = "#e6c35c" # gold: the Triforce
+path = "#7fb35a"   # grass green: the open field
+branch = "#87b6d9" # sky blue: the sky over the field

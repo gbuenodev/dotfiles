@@ -1,34 +1,42 @@
-# Two-line prompt inspired by the oh-my-zsh "gnzh" theme
+# Two-line prompt inspired by the oh-my-zsh "gnzh" theme.
+# Same layout on every host (kokiri.toml, hyrule.toml); only the palette at the end differs.
 add_newline = false
 format = """
 ╭─$username$hostname $directory$git_branch$git_status
 ╰─$character"""
 right_format = "$cmd_duration$status"
+palette = "kokiri_forest"
 
 [username]
 show_always = true
 format = "[$user]($style)"
-style_user = "bold green"
+style_user = "bold person"
 
 [hostname]
 ssh_only = false
 format = "@[$hostname]($style)"
-style = "bold green"
+style = "bold person"
 
 [directory]
-style = "bold blue"
+style = "bold path"
 truncate_to_repo = false
 truncation_length = 100
 
 [git_branch]
 format = "[‹$branch›]($style)"
-style = "bold yellow"
+style = "bold branch"
 
 [character]
-success_symbol = "[➤](bold green)"
+success_symbol = "[➤](bold person)"
 error_symbol = "[➤](bold red)"
 
 # Exit code of the last command, on the right (disabled by default)
 [status]
 disabled = false
 format = "[$status ↵]($style)"
+
+# Kokiri Forest, with Everforest colors
+[palettes.kokiri_forest]
+person = "#a7c080" # moss green: the forest canopy
+path = "#83c092"   # aqua: water and light through the leaves
+branch = "#dbbc7f" # amber: the tree-trunk houses

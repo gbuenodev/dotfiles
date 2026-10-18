@@ -53,7 +53,7 @@ Completo; aplica sem erros com `nxr`.
 - **Formatação:** `nix fmt` (nixfmt-tree).
 - **nvim:** lazy.nvim (não a distribuição LazyVim). Servidores LSP pelo Nix, sem Mason. Navegação de janelas no `Ctrl-w` padrão, sem remapear. Evitar atalhos com Alt (o teclado AULA 65 não tem).
 - **Commits sem coassinatura do Claude.**
-- **Tema do Starship por máquina:** `config/starship/<hostname>.toml`, escolhido em `home/starship.nix` pelo `osConfig.networking.hostName`. O kokiri mantém o tema gnzh de duas linhas; o hyrule usa o preset `tokyo-night`, como dica visual de que é outra máquina.
+- **Tema do Starship por máquina:** `config/starship/<hostname>.toml`, escolhido em `home/starship.nix` pelo `osConfig.networking.hostName`. Os dois usam o mesmo layout gnzh de duas linhas e só mudam a paleta no fim do arquivo, como dica visual de que é outra máquina: kokiri = Kokiri Forest (cores do Everforest), hyrule = Hyrule Field (dourado, verde grama, azul céu). Mudar o layout exige editar os dois arquivos.
 - **Nome no flake = hostname** (`darwinConfigurations.kokiri`, `nixosConfigurations.hyrule`), para o `nxr` e o `*-rebuild` acharem o host sozinhos.
 - **hyrule:** btrfs com subvolumes `@`, `@home` e `@nix`; `zramSwap` em vez de partição de swap; SSH só por chave; senhas e Wi-Fi fora do Nix e do git.
 - **hyrule usa o mesmo `nixpkgs-unstable` do Mac** por enquanto (um input, um `flake.lock`). Rever o canal estável quando houver serviços que não podem quebrar.
