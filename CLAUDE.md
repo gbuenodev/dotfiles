@@ -1,6 +1,6 @@
 # dotfiles
 
-Configuração do Mac (e futuramente do homelab NixOS) com Nix flakes, nix-darwin e home-manager.
+Configuração do Mac (`kokiri`, nix-darwin) e do homelab (`hyrule`, NixOS) com Nix flakes e home-manager. O `README.md` descreve o repositório; `docs/` documenta cada sistema.
 
 ## Regra: explicar passo a passo
 
@@ -14,24 +14,16 @@ Este projeto também serve para aprender Nix e o sistema. Em toda mudança:
 
 ## Convenções
 
-- Apps gráficos: casks do Homebrew, declarados em `modules/darwin/homebrew.nix`.
+- Apps gráficos: casks do Homebrew, declarados em `modules/darwin/homebrew.nix`. Exceção: quando não há cask utilizável (o do qBittorrent foi desativado), o app vem do nixpkgs.
 - Ferramentas de terminal: Nix (home-manager ou nixpkgs), iguais no Mac e no homelab.
 - Responsabilidades: o Nix gerencia pacotes e sistema; as configs das ferramentas são responsabilidade do usuário. Elas ficam como arquivos nativos em `config/<app>/`, versionadas pelo git e ligadas pelo home-manager com `mkOutOfStoreSymlink` (sem `settings` no Nix). O rollback do Nix não as desfaz; o histórico delas é o git.
 - Módulos `programs.*` do home-manager continuam úteis para instalar e integrar (por exemplo, o `starship init` no zsh). No Mac, `package = null` quando o app vem do cask.
+- Módulos do home-manager ficam em `home/`; os compartilhados são importados por `home/default.nix`, e os de uma máquina só, por `hosts/<máquina>/home.nix`.
+- Nome no flake = hostname.
 - Formatação: `nix fmt` (nixfmt-tree).
 - Aplicar a config (versões do `flake.lock`): `nxr`.
 - Atualizar tudo (flake inputs + Homebrew) e aplicar: `nxu`.
 
-## Estrutura
-
-- `flake.nix`: entradas e a definição de cada máquina.
-- `hosts/<máquina>/`: o que é específico de uma máquina.
-- `modules/darwin/`: módulos do nix-darwin (sistema, só no Mac).
-- `home/`: módulos do home-manager (usuário, compartilhados entre máquinas). Só arquivos `.nix`.
-- `config/<app>/`: arquivos de config que não são Nix (por exemplo, `config/nvim/`), ligados com `mkOutOfStoreSymlink` para editar sem rebuild.
-- `scripts/`: scripts shell puros com nomes descritivos (`nixrebuild.sh` → comando `nxr`, `nixupdate.sh` → comando `nxu`); o módulo em `home/scripts.nix` os instala com `writeShellApplication`.
-- `secrets/`: apenas segredos criptografados (sops-nix/agenix), nunca em texto puro.
-
 ## Contexto
 
-Antes de começar, leia `docs/progresso.md`: estado atual, decisões tomadas e pendências. Atualize-o ao fim de cada sessão.
+O `README.md` (estrutura e uso do repo) e o `docs/` (`home.md`, `kokiri.md`, `hyrule.md`, `media.md`) descrevem o estado atual: ao mudar uma máquina, a estrutura ou um fluxo, atualize o documento correspondente na mesma mudança. Pendências e o andamento ficam na memória do Claude, não no repo.
