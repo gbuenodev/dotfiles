@@ -4,22 +4,38 @@ Diário de bordo da configuração. Atualizar ao fim de cada sessão de trabalho
 
 ## Estado atual (2026-10-17)
 
-O Mac (`hyrule`, `darwinConfigurations.macbook`) está completo e aplica sem erros com `nxr`. Tudo está commitado.
+Duas máquinas, no tema Zelda: o Mac é o **`kokiri`** (a casa do Link) e o homelab é o **`hyrule`** (o primeiro mundo que ele explora).
 
-- **Sistema (nix-darwin):** Touch ID no `sudo`, `nix-gc` semanal e `nix-optimise`, hostname `hyrule`, ⌘Espaço liberado do Spotlight para o Raycast (`modules/darwin/hotkeys.nix`).
+### kokiri (Mac, `darwinConfigurations.kokiri`, `hosts/kokiri/`)
+
+Completo; aplica sem erros com `nxr`.
+
+- **Sistema (nix-darwin):** Touch ID no `sudo`, `nix-gc` semanal e `nix-optimise`, hostname `kokiri` (`kokiri.local` na rede), ⌘Espaço liberado do Spotlight para o Raycast (`modules/darwin/hotkeys.nix`).
 - **Homebrew:** casks `cmux`, `dbeaver-community`, `ghostty` e `raycast`. O problema da adoção do `Raycast.app` foi resolvido; hoje o app é do `gbueno`.
 - **home-manager:** zsh (`programs.zsh` com autosuggestion, syntax highlighting e history substring search), Starship, Ghostty, cmux, neovim (com ripgrep e fd) e os comandos `nxr`/`nxu`.
 - **Configs nativas em `config/`** (ghostty, starship, zsh, nvim, cmux), ligadas com `mkOutOfStoreSymlink`. O `~/.zshrc` passou a ser gerado pelo home-manager e carrega o `config/zsh/zshrc`.
 - **nvim:** lazy.nvim com kanagawa, telescope e which-key, além do `CHEATSHEET.md` aberto com `Space ?`.
+- **Ghostty:** `font-size = 18`, `macos-titlebar-style = tabs`.
 
-**Agora:** começar o homelab. Antes de projetar, ouvir os objetivos (hardware, primeiro uso, evolução, acesso de fora, experiência com a instalação do NixOS).
+### hyrule (homelab, NixOS)
+
+**Passo A concluído:** NixOS mínimo instalado à mão pelo ISO minimal. Dá boot sozinho, entra na Wi-Fi e aceita SSH (`ssh gbueno@192.168.0.14`). A config ainda está **fora do repo**, em `/etc/nixos/` na própria máquina.
+
+- **Hardware:** x86_64, Intel, 8 núcleos, 15 GiB de RAM, NVMe ADATA 512 GB (`nvme0n1`), Wi-Fi `wlp0s20f3`, UEFI.
+- **Disco:** GPT com ESP de 1 GB (vfat, rótulo `BOOT`, `/boot`, `umask=077`) e o resto em btrfs (rótulo `nixos`), com os subvolumes `@` (`/`), `@home` (`/home`) e `@nix` (`/nix`), montados com `compress=zstd,noatime`. As opções de compressão ficam no `configuration.nix`, porque o `nixos-generate-config` só copia o `subvol=`.
+- **`configuration.nix` mínimo:** systemd-boot, `zramSwap` (sem partição de swap), NetworkManager, fuso `America/Sao_Paulo`, usuário `gbueno` (`wheel`, `networkmanager`) com a chave `~/.ssh/id_ed25519.pub` do kokiri, OpenSSH só por chave e sem root, flakes ligados, `git` e `neovim`.
+- **Nunca dorme:** `services.logind.settings.Login.HandleLidSwitch*` = `ignore` (bateria, carregador, dock) e os alvos `sleep`, `suspend`, `hibernate` e `hybrid-sleep` mascarados (`systemd.targets.*.enable = false`). O `nixos-rebuild switch` não reinicia o logind, então a mudança na tampa só valeu depois do reboot (conferir com `busctl get-property org.freedesktop.login1 ...`). Testado com a tampa fechada.
+- **Ghostty via SSH:** sem a terminfo, programas com pager falham com `'xterm-ghostty': unknown terminal type` (contorno: `--no-pager` ou `TERM=xterm-256color`). Solução: `pkgs.ghostty.terminfo` nos pacotes.
+- **Senhas fora do Nix:** a senha do `gbueno` foi definida com `nixos-enter` + `passwd` (só no `/etc/shadow`); o root está bloqueado (`--no-root-passwd`). A Wi-Fi é o `.nmconnection` copiado do live para `/etc/NetworkManager/system-connections/` (root, 600).
+
+**Próximo: passo B**, colocar o `hyrule` no flake (`hosts/hyrule/` com o `hardware-configuration.nix` gerado na máquina, `nixosConfigurations.hyrule`, `home/` compartilhado), clonar o repo lá e aplicar com `nxr`.
 
 ## Histórico
 
 - **2026-09-27:** casks do Homebrew, Touch ID, gc/optimise. O rebuild parou no cask do Raycast (proteção App Management do macOS).
 - **2026-09-30:** zsh no home-manager, configs movidas para `config/`, neovim, `nxr`/`nxu` no lugar de `dotfiles-update`.
 - **2026-10-16:** plugins do nvim, config do cmux, atalhos do Ghostty com a Hyper Key (Caps Lock).
-- **2026-10-17:** mais atalhos do Telescope, cheatsheet ampliado, coassinaturas do Claude removidas do histórico, variáveis específicas da máquina movidas para o `~/.zshenv.local` (fora do repo), início do homelab.
+- **2026-10-17:** mais atalhos do Telescope, cheatsheet ampliado, coassinaturas do Claude removidas do histórico, variáveis específicas da máquina movidas para o `~/.zshenv.local` (fora do repo), renomeação (Mac `hyrule` → `kokiri`, homelab = `hyrule`), Ghostty com fonte 18 e abas na barra de título, instalação do NixOS no `hyrule` (passo A).
 
 ## Decisões tomadas
 
@@ -33,17 +49,24 @@ O Mac (`hyrule`, `darwinConfigurations.macbook`) está completo e aplica sem err
 - **Formatação:** `nix fmt` (nixfmt-tree).
 - **nvim:** lazy.nvim (não a distribuição LazyVim). Servidores LSP pelo Nix, sem Mason. Navegação de janelas no `Ctrl-w` padrão, sem remapear. Evitar atalhos com Alt (o teclado AULA 65 não tem).
 - **Commits sem coassinatura do Claude.**
+- **Nome no flake = hostname** (`darwinConfigurations.kokiri`, `nixosConfigurations.hyrule`), para o `nxr` e o `*-rebuild` acharem o host sozinhos.
+- **hyrule:** btrfs com subvolumes `@`, `@home` e `@nix`; `zramSwap` em vez de partição de swap; SSH só por chave; senhas e Wi-Fi fora do Nix e do git.
+- **hyrule usa o mesmo `nixpkgs-unstable` do Mac** por enquanto (um input, um `flake.lock`). Rever o canal estável quando houver serviços que não podem quebrar.
 - **`/opt/homebrew`** era do `suaquadra` (uid 501); passou para o `gbueno` com `chown`.
 
 ## Pendências
 
 ### Homelab
 
-- [ ] Definir objetivos e hardware.
-- [ ] Para quando o host NixOS entrar no flake: `formatter` também para Linux e canal nixpkgs estável para o servidor (a decidir).
+- [ ] Passo B: `hyrule` no flake (acima).
+- [ ] Definir o primeiro uso do `hyrule` (passo C em diante, um serviço por vez).
+- [ ] Ao entrar no flake: `formatter` também para `x86_64-linux` e `pkgs.ghostty.terminfo` (para o Ghostty funcionar bem via SSH).
+- [ ] IP fixo (reserva no DHCP do roteador ou no NetworkManager), para o `192.168.0.14` não mudar.
+- [ ] Mais tarde: controlar a rede Wi-Fi de casa pelo homelab (ainda não; esperar o usuário trazer).
 
 ### Mac
 
+- [ ] Dar ao **cmux** a permissão de Rede Local (Ajustes → Privacidade e Segurança → Rede Local). Sem ela, `ssh` para `192.168.x.x` falha com `No route to host`; o Ghostty já tem. O nix-darwin não consegue declarar essa permissão.
 - [ ] Adicionar `result` ao `.gitignore` (é o link deixado por `nix build`/`darwin-rebuild build`).
 - [ ] Inventário do Homebrew. Ainda não declarado: o cask `session-manager-plugin`. Taps sem confiança: `hashicorp/tap`, `mongodb/brew`, `supabase/tap` (decidir `brew trust` ou `untap`). Apps instalados à mão em `/Applications` a virar casks: ChatGPT, Granola, Zed, Docker, Insomnia, balenaEtcher, Unity Hub, Spotify. Depois, `cleanup = "uninstall"`.
 - [ ] Adotar o `nix-homebrew` com `autoMigrate = true` (passo separado).
