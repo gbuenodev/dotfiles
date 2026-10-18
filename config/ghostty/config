@@ -1,6 +1,7 @@
 # Appearance
 theme = Kanagawa Wave
-font-size = 14
+font-size = 18
+macos-titlebar-style = tabs
 
 # Behavior
 macos-option-as-alt = true
