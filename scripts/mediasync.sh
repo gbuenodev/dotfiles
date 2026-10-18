@@ -93,7 +93,8 @@ find "$src" -mindepth 2 -name .DS_Store -delete
 find "$src" -mindepth 2 -type d -empty -delete
 
 echo "==> $(date '+%F %T') rsync $src/ -> $dest/"
-rsync -a --partial --remove-source-files --chmod=D0755,F0644 \
+# Group-writable, group from the setgid folders on hyrule (media), so Jellyfin can add subtitles
+rsync -a --no-group --partial --remove-source-files --chmod=D2775,F0664 \
   --exclude .DS_Store "$src/" "$dest/"
 
 # rsync removes the files it sent; drop the folders they leave behind

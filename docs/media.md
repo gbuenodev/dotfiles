@@ -24,10 +24,10 @@ Instalado pelo nixpkgs (`home/qbittorrent.nix`). As preferências ficam no próp
 
 `scripts/mediasync.sh` e `home/mediasync.nix`.
 
-- Envia `~/Hyrule/Jellyfin/media/` para `hyrule:/srv/media/` com `rsync -a --partial --remove-source-files --chmod=D0755,F0644`.
+- Envia `~/Hyrule/Jellyfin/media/` para `hyrule:/srv/media/` com `rsync -a --no-group --partial --remove-source-files --chmod=D2775,F0664`.
   - **`--partial`:** uma cópia interrompida continua de onde parou.
   - **`--remove-source-files`:** apaga do Mac só o que foi enviado. Depois, o script remove as pastas que ficaram vazias.
-  - **`--chmod`:** os arquivos chegam com permissão de leitura para o Jellyfin.
+  - **`--chmod` e `--no-group`:** os arquivos chegam graváveis pelo grupo `media` (herdado das pastas), para o Jellyfin poder salvar legendas ao lado deles.
 - Se não houver nada a enviar, sai sem usar a rede.
 - Antes de enviar, espera até os arquivos pararem de chegar (nenhum movido nos últimos 20 s, por até 5 min), para não mandar um vídeo antes das legendas.
 - Organiza as legendas das pastas com **um único vídeo**: move os `.srt`, `.ass`, `.ssa`, `.vtt` e `.sub`, inclusive os de subpastas como `Subs/`, para o lado do vídeo, com o nome `<vídeo>.<idioma>[.forced|.sdh].<ext>`, que o Jellyfin reconhece. O idioma vem do nome do arquivo (`English`/`eng` → `en`, `Brazilian`/`pt-BR`/`pob` → `pt-BR`, `Portuguese`/`por` → `pt`, `Spanish`/`spa` → `es`; os outros mantêm o nome original), e as cópias idênticas são apagadas. Pastas com vários vídeos, como temporadas inteiras, ficam como estão.
@@ -39,7 +39,7 @@ Instalado pelo nixpkgs (`home/qbittorrent.nix`). As preferências ficam no próp
 `hosts/hyrule/jellyfin.nix`.
 
 - **`services.jellyfin` com `openFirewall`:** abre o TCP 8096 (web e apps) e o 8920 (HTTPS), e o UDP 1900 e 7359 (descoberta na rede local).
-- **Pastas:** `/srv/media`, `/srv/media/movies` e `/srv/media/shows`, do `gbueno`, com permissão 0755. Elas são criadas pelo `systemd.tmpfiles`.
+- **Pastas:** `/srv/media`, `/srv/media/movies` e `/srv/media/shows`, do `gbueno` e do grupo `media`, com permissão 2775, criadas pelo `systemd.tmpfiles`. O `gbueno` e o `jellyfin` estão no grupo `media`; o bit setgid (`2`) faz tudo o que é criado lá dentro herdar o grupo, e o `UMask` do Jellyfin é `0007`, então as legendas que ele baixa também ficam graváveis pelo grupo.
 - **Fora do Nix**, em `/var/lib/jellyfin`: usuário administrador, bibliotecas (`Filmes` → `/srv/media/movies`, `Séries` → `/srv/media/shows`) e idioma dos metadados (pt-BR). Tudo isso se configura pela interface web, em `http://hyrule.local:8096`.
 
 ## TV
