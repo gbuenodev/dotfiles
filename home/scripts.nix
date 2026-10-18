@@ -3,7 +3,7 @@ let
   platform = pkgs.stdenv.hostPlatform;
   flake = "${config.home.homeDirectory}/dotfiles";
   rebuild = if platform.isDarwin then "darwin-rebuild" else "nixos-rebuild";
-  defaultHost = if platform.isDarwin then "macbook" else "$(hostname)";
+  defaultHost = if platform.isDarwin then "kokiri" else "$(hostname)";
 
   # nxr: apply the current config (versions pinned by flake.lock)
   nxr = pkgs.writeShellApplication {

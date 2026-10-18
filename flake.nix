@@ -26,10 +26,10 @@
       user = "gbueno";
     in
     {
-      darwinConfigurations.macbook = nix-darwin.lib.darwinSystem {
+      darwinConfigurations.kokiri = nix-darwin.lib.darwinSystem {
         specialArgs = { inherit user; };
         modules = [
-          ./hosts/macbook
+          ./hosts/kokiri
 
           home-manager.darwinModules.home-manager
           {

@@ -25,9 +25,9 @@
 
   security.pam.services.sudo_local.touchIdAuth = true;
 
-  networking.hostName = "hyrule";
-  networking.computerName = "hyrule";
-  networking.localHostName = "hyrule";
+  networking.hostName = "kokiri";
+  networking.computerName = "kokiri";
+  networking.localHostName = "kokiri";
 
   system.primaryUser = user;
   users.users.${user}.home = "/Users/${user}";
