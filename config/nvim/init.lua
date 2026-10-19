@@ -64,8 +64,20 @@ if not vim.uv.fs_stat(lazypath) then
 end
 vim.opt.rtp:prepend(lazypath)
 
+-- lazy.nvim rewrites its lockfile after every install. Other accounts (suaquadra)
+-- can only read the repo's, so they use a copy in their own data dir, refreshed on start
+local lockfile = vim.fn.stdpath("config") .. "/lazy-lock.json"
+if not vim.uv.fs_access(lockfile, "W") then
+	local copy = vim.fn.stdpath("data") .. "/lazy-lock.json"
+	vim.fn.mkdir(vim.fn.stdpath("data"), "p")
+	vim.uv.fs_copyfile(lockfile, copy)
+	vim.uv.fs_chmod(copy, tonumber("644", 8))
+	lockfile = copy
+end
+
 require("lazy").setup({
 	spec = { import = "plugins" },
+	lockfile = lockfile,
 	install = { colorscheme = { "kanagawa-wave" } },
 	rocks = { enabled = false },
 	change_detection = { notify = false },

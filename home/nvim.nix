@@ -1,4 +1,14 @@
-{ config, pkgs, ... }:
+{
+  config,
+  osConfig,
+  pkgs,
+  user,
+  ...
+}:
+let
+  # The repo lives in ${user}'s home, also when another account uses this module
+  dotfiles = "${osConfig.users.users.${user}.home}/dotfiles";
+in
 {
   home.packages = with pkgs; [
     neovim
@@ -11,6 +21,5 @@
     VISUAL = "nvim";
   };
 
-  xdg.configFile."nvim".source =
-    config.lib.file.mkOutOfStoreSymlink "${config.home.homeDirectory}/dotfiles/config/nvim";
+  xdg.configFile."nvim".source = config.lib.file.mkOutOfStoreSymlink "${dotfiles}/config/nvim";
 }

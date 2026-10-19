@@ -1,4 +1,4 @@
-# Work account on this Mac, managed by its own home-manager (only the Ghostty config).
+# Work account on this Mac, managed by its own home-manager (Ghostty and Neovim configs).
 # Self-contained: to drop it, delete this file and its line in flake.nix.
 let
   name = "suaquadra";
@@ -10,7 +10,10 @@ in
   users.users.${name}.home = home;
 
   home-manager.users.${name} = {
-    imports = [ ../../home/ghostty.nix ];
+    imports = [
+      ../../home/ghostty.nix
+      ../../home/nvim.nix
+    ];
 
     home.username = name;
     home.homeDirectory = home;

@@ -26,6 +26,7 @@ Módulos do home-manager em `home/`, importados por `home/default.nix` nas duas 
 
 - lazy.nvim com kanagawa, telescope e which-key. As versões ficam fixadas em `config/nvim/lazy-lock.json`.
 - `Space ?` abre o `config/nvim/CHEATSHEET.md`.
+- Contas que não podem escrever no repo (o `suaquadra`) usam uma cópia do lockfile em `~/.local/share/nvim/lazy-lock.json`, refeita a cada início, porque o lazy.nvim reescreve o lockfile depois de cada instalação.
 - Servidores LSP, quando houver, vêm do Nix, e não do Mason.
 
 ## SSH

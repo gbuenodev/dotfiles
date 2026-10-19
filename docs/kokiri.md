@@ -4,7 +4,7 @@ MacBook Apple Silicon (`aarch64-darwin`), macOS com nix-darwin. É a máquina de
 
 - Sistema: `hosts/kokiri/default.nix`, `modules/darwin/`
 - home-manager só do Mac: `hosts/kokiri/home.nix`
-- Conta de trabalho (`suaquadra`): `hosts/kokiri/suaquadra.nix`, módulo independente importado pelo `flake.nix`. Para removê-la, apague o arquivo e a linha dele no `flake.nix`
+- Conta de trabalho (`suaquadra`): `hosts/kokiri/suaquadra.nix`, módulo independente importado pelo `flake.nix`. Tem um home-manager próprio só com o Ghostty e o Neovim, que usam os mesmos arquivos do repo do `gbueno`. Para removê-la, apague o arquivo e a linha dele no `flake.nix`
 - Na rede: `kokiri.local`
 
 ## Sistema (nix-darwin)
@@ -31,7 +31,7 @@ MacBook Apple Silicon (`aarch64-darwin`), macOS com nix-darwin. É a máquina de
 | qBittorrent | nixpkgs, porque o cask foi desativado (falha no Gatekeeper) | no próprio app |
 | mediasync | `home/mediasync.nix` | ver [Mídia](media.md) |
 
-- **Ghostty:** tema Kanagawa Wave, fonte 18, abas na barra de título (`macos-titlebar-style = tabs`). Atalhos com a Hyper Key (Caps Lock pelo Raycast = `ctrl+alt+shift+super`) para abas, splits e tamanho da fonte. O `suaquadra` usa o mesmo arquivo, gerenciado por um home-manager próprio que só tem o Ghostty.
+- **Ghostty:** tema Kanagawa Wave, fonte 18, abas na barra de título (`macos-titlebar-style = tabs`). Atalhos com a Hyper Key (Caps Lock pelo Raycast = `ctrl+alt+shift+super`) para abas, splits e tamanho da fonte.
 - **Apps do Nix:** aparecem em `~/Applications/Home Manager Apps/` (`targets.darwin.linkApps`).
 
 ## Fora do repo
