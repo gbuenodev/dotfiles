@@ -1,4 +1,14 @@
-{ config, pkgs, ... }:
+{
+  config,
+  osConfig,
+  pkgs,
+  user,
+  ...
+}:
+let
+  # The repo lives in ${user}'s home, also when another account uses this module
+  dotfiles = "${osConfig.users.users.${user}.home}/dotfiles";
+in
 {
   programs.ghostty = {
     enable = true;
@@ -9,5 +19,5 @@
   };
 
   xdg.configFile."ghostty/config".source =
-    config.lib.file.mkOutOfStoreSymlink "${config.home.homeDirectory}/dotfiles/config/ghostty/config";
+    config.lib.file.mkOutOfStoreSymlink "${dotfiles}/config/ghostty/config";
 }

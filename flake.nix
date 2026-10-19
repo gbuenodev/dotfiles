@@ -41,6 +41,8 @@
           ./hosts/kokiri
           home-manager.darwinModules.home-manager
           (homeManager [ ./hosts/kokiri/home.nix ])
+          # Optional work account; remove this line (and the file) to drop it
+          ./hosts/kokiri/suaquadra.nix
         ];
       };
 
