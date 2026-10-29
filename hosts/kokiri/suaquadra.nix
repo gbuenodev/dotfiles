@@ -1,4 +1,4 @@
-# Work account on this Mac, managed by its own home-manager (Ghostty and Neovim configs).
+# Work account on this Mac, managed by its own home-manager (Ghostty config for cmux, and Neovim).
 # Self-contained: to drop it, delete this file and its line in flake.nix.
 let
   name = "suaquadra";

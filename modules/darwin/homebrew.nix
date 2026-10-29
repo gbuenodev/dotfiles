@@ -12,7 +12,6 @@
     casks = [
       "cmux"
       "dbeaver-community"
-      "ghostty"
       "raycast"
     ];
   };

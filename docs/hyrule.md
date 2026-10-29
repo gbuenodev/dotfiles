@@ -41,7 +41,7 @@ Servidor doméstico, NixOS em `x86_64-linux`. O nome vem do primeiro mundo que o
 - **Rede:** NetworkManager e Avahi, que publica `hyrule.local`.
 - **Acesso:** OpenSSH só por chave (a `~/.ssh/id_ed25519.pub` do kokiri), sem senha e sem root.
 - **Usuário:** `gbueno`, nos grupos `wheel` e `networkmanager`, com zsh e o mesmo [ambiente](home.md) do Mac.
-- **Pacotes:** git, neovim, rsync (recebe o `mediasync`) e a terminfo do Ghostty. Sem ela, o `less` e outros programas falham por SSH com `'xterm-ghostty': unknown terminal type`.
+- **Pacotes:** git, neovim, rsync (recebe o `mediasync`) e a terminfo do Ghostty, que o cmux usa (`TERM=xterm-ghostty`). Sem ela, o `less` e outros programas falham por SSH com `'xterm-ghostty': unknown terminal type`.
 - **Nixpkgs:** o mesmo `nixpkgs-unstable` do Mac. Instalado com o ISO 26.05, por isso o `system.stateVersion = "26.05"`.
 
 ## Serviços

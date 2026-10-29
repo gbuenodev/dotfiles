@@ -78,7 +78,7 @@
   environment.systemPackages = [
     pkgs.git
     pkgs.neovim
-    pkgs.ghostty.terminfo
+    pkgs.ghostty.terminfo # cmux runs with TERM=xterm-ghostty
     pkgs.rsync # receiving end of mediasync
   ];
 
